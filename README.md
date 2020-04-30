@@ -6,12 +6,12 @@ Find the live coding youtube video [HERE](https://www.youtube.com/channel/UCGhXJ
 
 # Getting Started
 
-If you are up for the challenge and want to code Kokoban yourself from scratch, just checkout this [Initial Commit](https://github.com/tcosmo/live-kokoban-C/tree/) of the repo!! Install the Allegro 5 dependency on your system (see below).     
+If you are up for the challenge and want to code Kokoban yourself from scratch, just checkout this [Initial Commit](https://github.com/tcosmo/live-kokoban-C/tree/b932f2a29ea935e819048465e245901be0f42a26) of the repo!! Install the Allegro 5 dependency on your system (see below).     
 
 In practice:
 - `git clone https://github.com/tcosmo/live-kokoban-C.git`
 - `cd live-kokoban-C`      
-- `git checkout `
+- `git checkout b932f2a29ea935e819048465e245901be0f42a26`
 - Run `make` in order to compile 
 - Run `./build/kokoban.out` (or `.\build\kokoban.out` on windows)
 
