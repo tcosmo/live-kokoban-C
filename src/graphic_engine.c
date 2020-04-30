@@ -87,6 +87,9 @@ void graphic_engine_run(GraphicEngine* graphic_engine)
     al_scale_transform(&t, 0.6, 0.6);
     al_use_transform(&t);
 
+    int curr_world_id = graphic_engine->current_world;
+    World* world = &graphic_engine->worlds[curr_world_id];
+
     while( graphic_engine->is_running ) {
         al_clear_to_color(BLACK);
 
@@ -100,10 +103,10 @@ void graphic_engine_run(GraphicEngine* graphic_engine)
         if(event.type == ALLEGRO_EVENT_KEY_DOWN) {
 
             switch(event.keyboard.keycode) {
-            case ALLEGRO_KEY_UP:    break;
-            case ALLEGRO_KEY_RIGHT: break;
-            case ALLEGRO_KEY_DOWN:  break;
-            case ALLEGRO_KEY_LEFT:  break;
+            case ALLEGRO_KEY_UP:    move_player(world, 0, -1); break;
+            case ALLEGRO_KEY_RIGHT: move_player(world, 1, 0);  break;
+            case ALLEGRO_KEY_DOWN:  move_player(world, 0, 1);  break;
+            case ALLEGRO_KEY_LEFT:  move_player(world, -1, 0);  break;
             case ALLEGRO_KEY_ESCAPE: graphic_engine->is_running = 0; break;
             }
 

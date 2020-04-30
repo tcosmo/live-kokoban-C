@@ -28,5 +28,6 @@ typedef struct
 } World;
 
 void free_worlds(World* worlds);
+void move_player(World* world, int move_x, int move_y);
 
 #endif
