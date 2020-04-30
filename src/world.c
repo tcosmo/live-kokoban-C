@@ -47,6 +47,21 @@ void change_player_position(World* world, int old_x, int old_y, int new_x, int n
         *new_cell = PLAYER;
 }
 
+void change_crate_position(World* world, int old_x, int old_y, int new_x, int new_y)
+{
+    Cell* old_cell = &world->cells[old_y][old_x];
+    if( *old_cell == CRATE_ON_GOAL )
+        *old_cell = GOAL;
+    else
+        *old_cell = EMPTY;
+
+    Cell* new_cell = &world->cells[new_y][new_x];
+    if( *new_cell == GOAL )
+        *new_cell = CRATE_ON_GOAL;
+    else
+        *new_cell = CRATE;
+}
+
 void move_player(World* world, int move_x, int move_y)
 {
     int player_x, player_y;
@@ -60,8 +75,39 @@ void move_player(World* world, int move_x, int move_y)
 
     Cell next_cell = world->cells[new_player_y][new_player_x];
 
-    if( next_cell == WALL || is_crate(next_cell) )
+    if( next_cell == WALL )
+        return;
+    
+    if( !is_crate(next_cell) ) {
+        change_player_position(world, player_x, player_y, new_player_x, new_player_y);
+        return;
+    }
+
+    int next_crate_x = new_player_x + move_x;
+    int next_crate_y = new_player_y + move_y;
+
+    if( !is_valid_position(world, next_crate_x, next_crate_y) )
         return;
 
+    Cell next_crate_cell = world->cells[next_crate_y][next_crate_x];
+
+    if( next_crate_cell == WALL )
+        return;
+
+    if( is_crate(next_crate_cell) )
+        return;
+
+    change_crate_position(world, new_player_x, new_player_y, next_crate_x, next_crate_y);
     change_player_position(world, player_x, player_y, new_player_x, new_player_y);
+}
+
+int world_won(World* world)
+{
+    for( int line = 0 ; line < world->height ; line += 1 )
+        for( int col = 0 ; col < world->width ; col += 1 ) {
+            Cell cell = world->cells[line][col];
+            if( cell == CRATE )
+                return 0;
+        }
+    return 1;
 }

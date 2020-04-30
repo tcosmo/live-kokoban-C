@@ -60,11 +60,8 @@ void draw_cell(GraphicEngine* graphic_engine, Cell cell, int line, int col)
                           TILE_W*col, TILE_H*line, 0);
 }
 
-void draw_map(GraphicEngine* graphic_engine)
+void draw_map(GraphicEngine* graphic_engine, World* world)
 {
-    int curr_world_id = graphic_engine->current_world;
-    World* world = &graphic_engine->worlds[curr_world_id];
-
     for( int line = 0 ; line < world->height ; line += 1 )
         for( int col = 0 ; col < world->width ; col += 1 ) {
             draw_cell(graphic_engine, EMPTY, line, col);
@@ -91,10 +88,17 @@ void graphic_engine_run(GraphicEngine* graphic_engine)
     World* world = &graphic_engine->worlds[curr_world_id];
 
     while( graphic_engine->is_running ) {
+        if( world_won(world) ) {
+            if( curr_world_id+1 < graphic_engine->nb_worlds ) {
+                curr_world_id += 1;
+                world = &graphic_engine->worlds[curr_world_id];
+            }
+            else 
+                graphic_engine->is_running = false;
+        }
+
         al_clear_to_color(BLACK);
-
-        draw_map(graphic_engine);
-
+        draw_map(graphic_engine, world);
         al_flip_display();
 
         ALLEGRO_EVENT event;
